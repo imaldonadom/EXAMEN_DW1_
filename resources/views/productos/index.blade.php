@@ -16,7 +16,7 @@
         <th>Stock Actual</th>
       </tr>
     </thead>
-    <tbody>
+      <tbody>
       @forelse($productos as $producto)
         <tr>
           <td>{{ $producto->id }}</td>
@@ -25,12 +25,23 @@
           <td>{{ $producto->precio_neto }}</td>
           <td>{{ $producto->precio_venta }}</td>
           <td>{{ $producto->stock_actual }}</td>
+          <td>
+            <a href="{{ route('productos.edit', $producto) }}" class="btn btn-warning btn-sm">Editar</a>
+
+            <form action="{{ route('productos.destroy', $producto) }}" method="POST" style="display:inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+            </form>
+          </td>
+
         </tr>
       @empty
         <tr>
-          <td colspan="6">No hay productos registrados.</td>
+          <td colspan="7">No hay productos registrados.</td>
         </tr>
       @endforelse
     </tbody>
+
   </table>
 @endsection

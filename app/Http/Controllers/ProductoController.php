@@ -27,20 +27,34 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'sku' => 'required|unique:productos',
-            'nombre' => 'required',
-            'precio_neto' => 'required|integer',
-            'precio_venta' => 'required|integer',
-            'stock_actual' => 'required|integer',
-        ]);
+        public function store(Request $request)
+        {
+            $request->validate([
+                'sku' => 'required|string|unique:productos,sku',
+                'nombre' => 'required',
+                'precio_neto' => 'required|integer',
+                'precio_venta' => 'required|integer',
+                'stock_actual' => 'required|integer',
+            ]);
 
-        Producto::create($request->all());
+                Producto::create([
+                'sku' => $request->sku,
+                'nombre' => $request->nombre,
+                'descripcion_corta' => $request->descripcion_corta ?? '',
+                'descripcion_larga' => $request->descripcion_larga ?? '',
+                'imagen' => $request->imagen ?? '',
+                'precio_neto' => $request->precio_neto,
+                'precio_venta' => $request->precio_venta,
+                'stock_actual' => $request->stock_actual,
+                'stock_minimo' => 0, // Si no usas estos campos aún, pon 0 o valores por defecto
+                'stock_bajo' => 0,
+                'stock_alto' => 0,
+            ]);
 
-        return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente');
-    }
+
+
+            return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente');
+        }
 
 
     /**
@@ -54,24 +68,48 @@ class ProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Producto $producto)
     {
-        //
+        return view('productos.edit', compact('producto'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Producto $producto)
     {
-        //
-    }
+        $request->validate([
+            'sku' => 'required|string|unique:productos,sku,' . $producto->id,
+            'nombre' => 'required',
+            'precio_neto' => 'required|integer',
+            'precio_venta' => 'required|integer',
+            'stock_actual' => 'required|integer',
+        ]);
 
+        $producto->update([
+            'sku' => $request->sku,
+            'nombre' => $request->nombre,
+            'descripcion_corta' => $request->descripcion_corta ?? '',
+            'descripcion_larga' => $request->descripcion_larga ?? '',
+            'imagen' => $request->imagen ?? '',
+            'precio_neto' => $request->precio_neto,
+            'precio_venta' => $request->precio_venta,
+            'stock_actual' => $request->stock_actual,
+            'stock_minimo' => $producto->stock_minimo,
+            'stock_bajo' => $producto->stock_bajo,
+            'stock_alto' => $producto->stock_alto,
+        ]);
+
+    return redirect()->route('productos.index')->with('success', 'Producto actualizado exitosamente');
+}
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado');
     }
 }

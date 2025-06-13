@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Usuario;   // o Producto / Cliente según el archivo
+use Illuminate\Routing\Controller;
 
 class UsuarioController extends Controller
 {
@@ -63,24 +65,39 @@ class UsuarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        return view('usuarios.edit', compact('usuario'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'rut' => 'required|string',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
+            'email' => 'required|email',
+        ]);
+
+        $usuario = Usuario::findOrFail($id);
+        $usuario->update($request->all());
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $usuario->delete();
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente.');
     }
+
 }
