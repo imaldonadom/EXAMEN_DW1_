@@ -26,16 +26,16 @@
           <td>{{ $usuario->apellido }}</td>
           <td>{{ $usuario->email }}</td>
           <td>{{ $usuario->created_at->format('d-m-Y H:i') }}</td>
-          <td>
-            <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning btn-sm">Editar</a>
+<td>
+    <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning btn-sm">Editar</a>
 
-            <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display:inline;">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-danger btn-sm"
-                onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar</button>
-            </form>
-          </td>
+    <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+    </form>
+</td>
+
         </tr>
       @empty
         <tr><td colspan="7">No hay usuarios registrados.</td></tr>

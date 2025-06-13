@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
-
+use Illuminate\Routing\Controller;
 class ProductoController extends Controller
 {
     /**
@@ -109,7 +109,7 @@ class ProductoController extends Controller
     public function destroy(Producto $producto)
     {
         $producto->delete();
-
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado');
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado exitosamente');
     }
+
 }

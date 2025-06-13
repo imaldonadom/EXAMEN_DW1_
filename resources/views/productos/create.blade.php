@@ -31,6 +31,12 @@
       <input type="number" name="stock_actual" id="stock_actual" class="form-control" required>
     </div>
 
+    <div class="mb-3">
+  <label for="descripcion_corta" class="form-label">Descripción Corta</label>
+  <textarea name="descripcion_corta" id="descripcion_corta" class="form-control"></textarea>
+</div>
+
+
     <button type="submit" class="btn btn-success">Guardar Producto</button>
   </form>
 @endsection
