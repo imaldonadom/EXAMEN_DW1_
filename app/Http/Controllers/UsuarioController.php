@@ -13,7 +13,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios = \App\Models\Usuario::all();
+        $usuarios = $usuarios = Usuario::all();;
         return view('usuarios.index', compact('usuarios'));
     }
 
@@ -41,7 +41,7 @@ class UsuarioController extends Controller
         ]);
 
         // Crear usuario
-        \App\Models\Usuario::create([
+        Usuario::create([
             'rut' => $request->rut,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
